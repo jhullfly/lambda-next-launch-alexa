@@ -1,0 +1,24 @@
+{
+	"session": {
+		"sessionId": "SessionId.02252ee1-16e1-4d02-b0f1-23437658d89a",
+		"application": {
+			"applicationId": "amzn1.ask.skill.74bbf820-f663-4544-8910-f18e3db1d368"
+		},
+		"attributes": {},
+		"user": {
+			"userId": "amzn1.ask.account.AEW57ZIVBFIZFZ4SHXUFNKWGOZ75GIQPW7FD5SCP5C2SMZ3MU6CWMKFNB2ZARHIGGYSQ53BOGSOZGLJW2TCDEN6WTIS5CEWBOSOPG45DGBGNYOZXV4CUZPC5ERVZM7KZ533BUSXVLGS65RVKSUC6QUSXJCW2QW7QS7RP5HYBR3R3FGJLHZVSIOFCAFMZNSHGL3IXD3V74STNASA"
+		},
+		"new": false
+	},
+	"request": {
+		"type": "IntentRequest",
+		"requestId": "EdwRequestId.2a072179-aec3-4832-82fb-27260e18fac8",
+		"locale": "en-US",
+		"timestamp": "2017-04-19T07:08:30Z",
+		"intent": {
+			"name": "nextSpaceXLaunch",
+			"slots": {}
+		}
+	},
+	"version": "1.0"
+}

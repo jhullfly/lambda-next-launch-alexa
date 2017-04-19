@@ -1,0 +1,57 @@
+{
+  "name": "lambda-next-launch-alexa",
+  "description": "Alexa skill to tell when the next launch is.",
+  "version": "1.0.0",
+  "dependencies": {
+    "airbrake": "1.2.0",
+    "babel-polyfill": "6.9.1",
+    "error-util": "1.0.1",
+    "lodash": "4.13.1",
+    "q": "1.4.1",
+    "space-flight-now-scraper": "1.0.0"
+  },
+  "devDependencies": {
+    "babel-cli": "6.10.1",
+    "babel-core": "6.10.4",
+    "babel-eslint": "6.1.2",
+    "babel-jest": "14.1.0",
+    "babel-preset-es2015": "6.9.0",
+    "babel-preset-stage-3": "6.11.0",
+    "eslint": "3.4.0",
+    "eslint-config-dashbot-backend": "1.0.1",
+    "eslint-plugin-async": "0.1.1",
+    "eslint-plugin-node": "2.0.0",
+    "grunt": "^1.0.1",
+    "grunt-aws-lambda": "^0.13.0",
+    "grunt-cli": "^1.2.0",
+    "node-lambda": "0.8.5",
+    "node-version-check": "2.1.1",
+    "properties-reader": "0.0.15"
+  },
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": {
+    "prepackage": "npm test",
+    "package": "cp package.json ./build/babel/package.json && ./node_modules/grunt/bin/grunt lambda_package",
+    "pretest": "node-version-check '6.10.0'",
+    "test": "eslint src && rm -rf dist build && babel src --out-dir build/babel/src --retain-lines",
+    "eslint": "eslint src",
+    "eslint-fix": "eslint --fix src",
+		"pretest-invoke": "npm test",
+		"test-invoke": "./node_modules/grunt/bin/grunt lambda_invoke"
+  },
+  "engines": {
+    "node": "6.10.0"
+  },
+  "babel": {
+    "presets": [
+      "es2015",
+      "stage-3"
+    ]
+  },
+  "eslintConfig": {
+    "extends": [
+      "dashbot-backend"
+    ]
+  }
+}

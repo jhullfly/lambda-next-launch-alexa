@@ -1,0 +1,18 @@
+version: 0.1
+phases:
+  install:
+    commands:
+      - npm install
+  build:
+    commands:
+      - npm run-script package
+      - mkdir -p ./dist/cloudformation
+      - aws cloudformation package --template-file ./aws/serverless-cloudformation.yml
+                                                 --s3-bucket lambda-builds-$AWS_REGION-$AWS_ACCOUNT_ID
+                                                 --s3-prefix $AWS_STACK_NAME
+                                                 --output-template-file ./dist/cloudformation/serverless.yml
+artifacts:
+  type: zip
+  files:
+    - ./dist/cloudformation/serverless.yml
+  discard-paths: yes

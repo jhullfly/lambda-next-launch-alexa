@@ -1,2 +1,2 @@
 # lambda-next-launch-alexa
-a alexa skill to tell when the next launch is
+A alexa skill to tell when next launch is.

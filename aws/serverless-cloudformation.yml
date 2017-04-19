@@ -1,0 +1,37 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: An Alexa skill that tell when the next launch is.
+Parameters:
+  NodeEnvironment:
+    Type: String
+    Description: the node environment, basically for distinguishing errors by environmet in airbrake
+Resources:
+  Lambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: Next Launch Alexa Skill
+      Handler: src/index.handler
+      Runtime: nodejs6.10
+      CodeUri: ../dist/lambda-next-launch-alexa_latest.zip
+      MemorySize: 128
+      Timeout: 30
+      Role: !GetAtt LambdaRole.Arn
+      Environment:
+        Variables:
+          NODE_ENV: !Ref NodeEnvironment
+      Events:
+        Skill:
+          Type: AlexaSkill
+
+  LambdaRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service: lambda.amazonaws.com
+          Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole

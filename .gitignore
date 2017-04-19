@@ -1,0 +1,16 @@
+# Dependency directory
+node_modules
+
+#babel output directory
+build
+
+#user specific config
+.env
+
+#webstorm config
+.idea
+
+schema/big.json
+
+dist
+
