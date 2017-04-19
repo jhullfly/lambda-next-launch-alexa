@@ -78,6 +78,12 @@ Resources:
               - - production
                 - Ref: AWS::StackName
                 - deployment
+            ParameterOverrides:
+              Fn::Join:
+              - ''
+              - - "{"
+                - Fn::Sub: ',"NodeEnvironment":"production"'
+                - "}"
           OutputArtifacts: []
       - Name: Deploy
         Actions:
