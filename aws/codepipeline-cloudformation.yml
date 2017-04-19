@@ -413,6 +413,6 @@ Parameters:
     Description: Information to code build about what image to use for the build
     Type: String
     AllowedValues:
-    - aws/codebuild/nodejs:6.10.0
-    Default: aws/codebuild/nodejs:6.10.0
+    - aws/codebuild/nodejs:4.3.2
+    Default: aws/codebuild/nodejs:4.3.2
 Outputs: {}

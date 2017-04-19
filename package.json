@@ -33,7 +33,7 @@
   "scripts": {
     "prepackage": "npm test",
     "package": "cp package.json ./build/babel/package.json && ./node_modules/grunt/bin/grunt lambda_package",
-    "pretest": "node-version-check '6.10.0'",
+    "pretest": "node-version-gte-4",
     "test": "eslint src && rm -rf dist build && babel src --out-dir build/babel/src --retain-lines",
     "eslint": "eslint src",
     "eslint-fix": "eslint --fix src",
