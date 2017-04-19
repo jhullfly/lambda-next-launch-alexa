@@ -400,7 +400,7 @@ Parameters:
   GitHubRepo:
     Description: Name of the github repo (e.x. bot-analytics-tracker
     Type: String
-    Default: lambda-kinesis-to-livedata
+    Default: lambda-next-launch-alexa
   GitHubBranch:
     Description: branch to build
     Type: String
