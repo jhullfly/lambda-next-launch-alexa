@@ -396,7 +396,7 @@ Parameters:
   GitHubOwner:
     Description: Name of organization for the repo (e.x. actionably)
     Type: String
-    Default: actionably
+    Default: jhullfly
   GitHubRepo:
     Description: Name of the github repo (e.x. bot-analytics-tracker
     Type: String
