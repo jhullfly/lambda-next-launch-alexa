@@ -7,8 +7,9 @@
     "babel-polyfill": "6.9.1",
     "error-util": "1.0.1",
     "lodash": "4.13.1",
+    "moment-timezone": "0.5.13",
     "q": "1.4.1",
-    "space-flight-now-scraper": "1.0.0"
+    "space-flight-now-scraper": "1.0.2"
   },
   "devDependencies": {
     "babel-cli": "6.10.1",
@@ -37,8 +38,8 @@
     "test": "eslint src && rm -rf dist build && babel src --out-dir build/babel/src --retain-lines",
     "eslint": "eslint src",
     "eslint-fix": "eslint --fix src",
-		"pretest-invoke": "npm test",
-		"test-invoke": "./node_modules/grunt/bin/grunt lambda_invoke"
+    "pretest-invoke": "npm test",
+    "test-invoke": "./node_modules/grunt/bin/grunt lambda_invoke"
   },
   "engines": {
     "node": "6.10.0"

@@ -1,5 +1,9 @@
 'use strict'
 
+const _ = require('lodash')
+const moment = require('moment-timezone')
+const scraper = require('space-flight-now-scraper')
+
 class NextLaunchSkill {
   buildSpeechletResponse(title, output, repromptText, shouldEndSession) {
     return {
@@ -48,14 +52,22 @@ class NextLaunchSkill {
   /**
    * Called when the user specifies an intent for this skill.
    */
-  getIntentResponse(intentRequest) {
+  async getIntentResponse(intentRequest) {
     const intentName = intentRequest.intent.name
 
     // Dispatch to your skill's intent handlers
-    if (intentName === 'nextlaunch') {
-      return this.buildSpeechletResponse('Next Launch', 'There is a launch soon', null, false)
+    if (intentName === 'nextlaunch' || intentName === 'nextLaunch') {
+      const text = await this.getNextLaunchTextWInterval(false)
+      return this.buildSpeechletResponse('Next Launch', text, null, true)
     } else if (intentName === 'nextSpaceXLaunch') {
-      return this.buildSpeechletResponse('Next Launch', 'There is a spacex launch soon', null, false)
+      const text = await this.getNextLaunchTextWInterval(true)
+      return this.buildSpeechletResponse('Next Launch', text, null, true)
+    } else if (intentName === 'nextLaunchDate') {
+      const text = await this.getNextLaunchTextWDate(false)
+      return this.buildSpeechletResponse('Next Launch', text, null, true)
+    } else if (intentName === 'nextSpaceXLaunchDate') {
+      const text = await this.getNextLaunchTextWDate(true)
+      return this.buildSpeechletResponse('Next Launch', text, null, true)
     } else if (intentName === 'AMAZON.HelpIntent') {
       return this.getWelcomeResponse()
     } else if (intentName === 'AMAZON.StopIntent' || intentName === 'AMAZON.CancelIntent') {
@@ -63,6 +75,66 @@ class NextLaunchSkill {
     } else {
       throw new Error('Invalid intent')
     }
+  }
+
+  findLaunch(launches, spacex) {
+    const goodLaunches = _.filter(launches, launch => {
+      return launch.launchDatetime && launch.launchDatetime.isAfter(moment()) &&
+        (!spacex || launch.missionDescription.toLowerCase().indexOf('spacex') !== -1)
+    })
+    return goodLaunches[0]
+  }
+
+  async getNextLaunchTextWDate(spacex) {
+    const launches = await scraper.nextLaunches()
+    const launch = this.findLaunch(launches, spacex)
+    return `
+      On ${launch.launchDatetime.tz('America/Los_Angeles').format('MMMM Do')} at 
+      ${launch.launchDatetime.tz('America/Los_Angeles').format('h:mm a')} a
+      ${launch.rocket} rocket will launch from
+      ${launch.launchSite}     
+    `
+  }
+
+  plural(amount, string) {
+    return amount + ' ' + string + (amount !== 1 ? 's' : '')
+  }
+
+  async getNextLaunchTextWInterval(spacex) {
+    const launches = await scraper.nextLaunches()
+    const launch = this.findLaunch(launches, spacex)
+    let secDiff = launch.launchDatetime.unix() - moment().unix()
+    const parts = []
+    const days = Math.floor(secDiff / (24 * 60 * 60))
+    if (days >= 1) {
+      parts.push(this.plural(days, 'day'))
+      secDiff -= days * (24 * 60 * 60)
+    }
+    const hours = Math.floor(secDiff / (60 * 60))
+    if (hours >= 1) {
+      parts.push(this.plural(hours, 'hour'))
+      secDiff -= hours * (60 * 60)
+    }
+    const minutes = Math.floor(secDiff / (60))
+    if (minutes >= 1) {
+      parts.push(this.plural(minutes, 'minute'))
+      secDiff -= minutes * (60)
+    }
+    console.log(secDiff)
+    if (secDiff >= 1) {
+      parts.push(this.plural(secDiff, 'second'))
+    }
+    let interval = ''
+    _.each(parts, (part, i) => {
+      if (i === parts.length - 2) {
+        interval += part + ' and '
+      } else if (i === parts.length - 1) {
+        interval += part
+      } else {
+        interval += part + ', '
+      }
+    })
+    return `In ${interval} ${launch.missionDescription.split('[')[0]}`
   }
 
   async handler(event) {
