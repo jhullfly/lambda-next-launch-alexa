@@ -5,6 +5,7 @@
   "dependencies": {
     "airbrake": "1.2.0",
     "babel-polyfill": "6.9.1",
+    "dashbot": "0.8.4",
     "error-util": "1.0.1",
     "lodash": "4.13.1",
     "moment-timezone": "0.5.13",

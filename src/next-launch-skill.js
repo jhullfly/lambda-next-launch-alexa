@@ -1,6 +1,7 @@
 'use strict'
 
 const _ = require('lodash')
+const dashbot = require('dashbot')('aob5YSzzizdeG0jYfj93VVKNTbiTBFSTzoXxRpXI').alexa
 const moment = require('moment-timezone')
 const scraper = require('space-flight-now-scraper')
 
@@ -137,13 +138,7 @@ class NextLaunchSkill {
     return `In ${interval} ${launch.missionDescription.split('[')[0]}`
   }
 
-  async handler(event) {
-    console.log(`event.session.application.applicationId=${event.session.application.applicationId}`)
-
-    if (event.session.application.applicationId !== 'amzn1.ask.skill.74bbf820-f663-4544-8910-f18e3db1d368') {
-      throw new Error('invalid application id')
-    }
-
+  async getResponse(event) {
     if (event.request.type === 'LaunchRequest') {
       return this.getWelcomeResponse()
     } else if (event.request.type === 'IntentRequest') {
@@ -151,6 +146,19 @@ class NextLaunchSkill {
     } else if (event.request.type === 'SessionEndedRequest') {
       return this.getSessionEndResponse()
     }
+  }
+
+  async handler(event, context) {
+    console.log(`event.session.application.applicationId=${event.session.application.applicationId}`)
+    const incomingLogging = dashbot.logIncoming(event, context)
+    if (event.session.application.applicationId !== 'amzn1.ask.skill.74bbf820-f663-4544-8910-f18e3db1d368') {
+      throw new Error('invalid application id')
+    }
+
+    const response = await this.getResponse(event)
+    const outgoingLogging = dashbot.logOutgoing(event, response)
+    await Promise.all([incomingLogging, outgoingLogging])
+    return response
   }
 }
 
