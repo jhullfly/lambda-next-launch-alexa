@@ -16,8 +16,8 @@ class NextLaunchSkill {
         },
         card: {
           type: 'Simple',
-          title: `SessionSpeechlet - ${title}`,
-          content: `SessionSpeechlet - ${output}`,
+          title: `${title}`,
+          content: `${output}`,
         },
         reprompt: {
           outputSpeech: {
